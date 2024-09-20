@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Lyrikist - Lyrics Translator</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Lyrikist</h1>
+        <form method="POST">
+            <div class="form-group">
+                <label for="song_name">Song Name:</label>
+                <input type="text" name="song_name" id="song_name">
+            </div>
+            <div class="form-group">
+                <label for="artist_name">Artist Name:</label>
+                <input type="text" name="artist_name" id="artist_name">
+            </div>
+            <div class="form-group">
+                <label for="lyrics">Or Paste Lyrics:</label>
+                <textarea name="lyrics" id="lyrics" rows="5"></textarea>
+            </div>
+            <div class="form-group">
+                <label for="target_language">Select Target Language:</label>
+                <select name="target_language" id="target_language">
+                    <option value="en">English</option>
+                    <option value="es">Spanish</option>
+                    <!-- Add more languages as needed -->
+                </select>
+            </div>
+            <button type="submit">Translate</button>
+        </form>
+        {% if error_message %}
+            <div class="error">
+                <p>{{ error_message }}</p>
+            </div>
+        {% endif %}
+        {% if track_info %}
+            <div class="info-container">
+                <h2>Track Information</h2>
+                <p><strong>Track Name:</strong> {{ track_info.track_name }}</p>
+                <p><strong>Artist Name:</strong> {{ track_info.artist_name }}</p>
+                <p><strong>Album Name:</strong> {{ track_info.album_name }}</p>
+                <p><strong>Genre:</strong> {{ track_info.primary_genres.music_genre_list[0]['music_genre']['music_genre_name'] if track_info.primary_genres.music_genre_list else 'N/A' }}</p>
+            </div>
+        {% endif %}
+        {% if artist_info %}
+            <div class="info-container">
+                <h2>Artist Information</h2>
+                <p><strong>Artist Name:</strong> {{ artist_info.artist_name }}</p>
+                <p><strong>Country:</strong> {{ artist_info.artist_country }}</p>
+                <p><strong>Rating:</strong> {{ artist_info.artist_rating }}</p>
+            </div>
+        {% endif %}
+        {% if album_info %}
+            <div class="info-container">
+                <h2>Album Information</h2>
+                <p><strong>Album Name:</strong> {{ album_info.album_name }}</p>
+                <p><strong>Release Date:</strong> {{ album_info.album_release_date }}</p>
+                <p><strong>Label:</strong> {{ album_info.album_label }}</p>
+            </div>
+        {% endif %}
+        {% if original_lyrics and translated_lyrics %}
+            <div class="lyrics-container">
+                <div class="lyrics-box">
+                    <h2>Original Lyrics:</h2>
+                    <pre>{{ original_lyrics }}</pre>
+                </div>
+                <div class="lyrics-box">
+                    <h2>Translated Lyrics:</h2>
+                    <pre>{{ translated_lyrics }}</pre>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+</body>
+</html>
